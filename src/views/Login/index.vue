@@ -43,15 +43,19 @@ export default {
   },
   methods: {
     onClickLeft () {
-      this.$router.base()
+      this.$router.go(-1)
     },
     async onSubmit () {
       if (this.username.trim() === '' || this.password.trim() === '') {
         return Toast('用户名和密码不能为空')
       }
-
+      Toast.loading({
+        message: '加载中...',
+        forbidClick: true
+      })
       const res = await login(this.username, this.password)
       console.log(res)
+      Toast.success('登录成功')
     }
   }
 }
