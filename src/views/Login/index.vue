@@ -38,8 +38,8 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
-      // userToken: ''
+      password: '',
+      userToken: ''
     }
   },
   methods: {
@@ -61,7 +61,7 @@ export default {
       // 将token本地存储到回话中
       localStorage.setItem('userToken', this.userToken)
       if (res.status === 200) {
-        // this.$router.push({ name: 'NewReport' })
+        this.$router.push({ name: 'NewReport' })
         Toast.success('登录成功')
         console.log(this.userToken)
       } else {

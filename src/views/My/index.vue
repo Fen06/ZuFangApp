@@ -7,7 +7,9 @@
         </div>
         <div class="loginfont">
           <p>游客</p>
-          <van-button type="primary" size="small">去登录</van-button>
+          <van-button type="primary" size="small" to="/login"
+            >去登录</van-button
+          >
         </div>
       </div>
       <div class="ellipse">
@@ -66,31 +68,13 @@
       />
     </div>
     <!-- 底部 -->
-    <div>
-      <van-tabbar
-        v-model="active"
-        class="icon"
-        active-color="#21b97a"
-        inactive-color="#000"
-      >
-        <van-tabbar-item class="iconfont icon-fangzi">首页</van-tabbar-item>
-        <van-tabbar-item class="iconfont icon-sousuodefuben"
-          >找房</van-tabbar-item
-        >
-        <van-tabbar-item class="iconfont icon-zixun">资讯</van-tabbar-item>
-        <van-tabbar-item class="iconfont icon-31wode">我的</van-tabbar-item>
-      </van-tabbar>
-    </div>
   </div>
 </template>
 
 <script>
 export default {
   data () {
-    return {
-      active: '',
-      activeVar: 0
-    }
+    return {}
   }
 }
 </script>
