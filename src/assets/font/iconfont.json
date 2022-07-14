@@ -1,0 +1,79 @@
+{
+  "id": "3521045",
+  "name": "Haokezufang",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "好客租房",
+  "glyphs": [
+    {
+      "icon_id": "30578550",
+      "name": "房子-copy",
+      "font_class": "fangzi-copy",
+      "unicode": "e75b",
+      "unicode_decimal": 59227
+    },
+    {
+      "icon_id": "30569030",
+      "name": "银行卡-copy",
+      "font_class": "yinhangqia-copy",
+      "unicode": "e75a",
+      "unicode_decimal": 59226
+    },
+    {
+      "icon_id": "77828",
+      "name": "收藏",
+      "font_class": "shoucang",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "201228",
+      "name": "3.1我的",
+      "font_class": "31wode",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "995973",
+      "name": "房子",
+      "font_class": "fangzi",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "1450463",
+      "name": "资讯",
+      "font_class": "zixun",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "2023527",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "2325919",
+      "name": "历史记录",
+      "font_class": "lishijilu",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "4933409",
+      "name": "搜索的副本",
+      "font_class": "sousuodefuben",
+      "unicode": "e759",
+      "unicode_decimal": 59225
+    },
+    {
+      "icon_id": "9046131",
+      "name": "客服",
+      "font_class": "kefu",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    }
+  ]
+}
