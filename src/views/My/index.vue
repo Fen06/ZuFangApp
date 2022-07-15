@@ -18,7 +18,7 @@
     </div>
     <!-- 中间部分 -->
     <div class="box">
-      <a href="javascript:;" class="flex-box ttop">
+      <a href="#/favorate" class="flex-box ttop">
         <div class="font">
           <i class="iconfont icon-shoucang"></i>
           <p>我的收藏</p>

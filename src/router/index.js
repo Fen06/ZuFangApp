@@ -33,11 +33,11 @@ const routes = [
   {
     path: '/register',
     component: () => import('@/views/Register')
+  },
+  {
+    path: '/favorate',
+    component: () => import('@/views/Favorate')
   }
-  // {
-  //   path: '/favorate',
-  //   component: () => import('@/views/Favorate')
-  // }
 ]
 
 const router = new VueRouter({
