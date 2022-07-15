@@ -1,12 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import { setToken, getToken } from '@/utils/index'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+  state: {
+    user: getToken() || {}
+  },
+
+  mutations: {
+    setuser (state, payload) {
+      state.user = payload
+      setToken(payload)
+    }
+  }
 })

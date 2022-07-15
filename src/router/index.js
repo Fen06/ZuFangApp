@@ -6,16 +6,23 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: () => import('@/views/Home')
-  },
-  {
-    path: '/my',
-    component: () => import('@/views/My'),
+    component: () => import('@/views/Layout'),
     children: [
       {
-        path: '/login/NewReport',
-        name: 'NewReport',
-        component: () => import('@/views/Login/NewReport')
+        path: '/ ',
+        component: () => import('@/views/Home')
+      },
+      {
+        path: '/news',
+        component: () => import('@/views/news')
+      },
+      {
+        path: '/find',
+        component: () => import('@/views/Find')
+      },
+      {
+        path: '/my',
+        component: () => import('@/views/My')
       }
     ]
   },
@@ -26,19 +33,11 @@ const routes = [
   {
     path: '/register',
     component: () => import('@/views/Register')
-  },
-  {
-    path: '/home',
-    component: () => import('@/views/Home')
-  },
-  {
-    path: '/news',
-    component: () => import('@/views/news')
-  },
-  {
-    path: '/find',
-    component: () => import('@/views/Find')
   }
+  // {
+  //   path: '/favorate',
+  //   component: () => import('@/views/Favorate')
+  // }
 ]
 
 const router = new VueRouter({
@@ -46,16 +45,16 @@ const router = new VueRouter({
 })
 
 // 导航守卫
-router.beforeEach((to, from, next) => {
-  if (to.path === '/') {
-    next()
-  } else {
-    const token = localStorage.getItem('userToken')
-    if (token === null || token === '') {
-      next({ path: '/' })
-    } else {
-      next()
-    }
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.path === '/') {
+//     next()
+//   } else {
+//     const token = localStorage.getItem('userToken')
+//     if (token === null || token === '') {
+//       next({ path: '/' })
+//     } else {
+//       next()
+//     }
+//   }
+// })
 export default router

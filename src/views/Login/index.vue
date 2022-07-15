@@ -34,14 +34,15 @@
 <script>
 import { login } from '@/api/user'
 import { Toast } from 'vant'
+
 export default {
   data () {
     return {
       username: '',
-      password: '',
-      userToken: ''
+      password: ''
     }
   },
+
   methods: {
     onClickLeft () {
       this.$router.go(-1)
@@ -55,15 +56,11 @@ export default {
         forbidClick: true
       })
       const res = await login(this.username, this.password)
-      console.log(res)
-      // console.log(res.data.body.token)
-      this.userToken = res.data.body.token
-      // 将token本地存储到回话中
-      localStorage.setItem('userToken', this.userToken)
+      console.log(res.data.body)
+      this.$store.commit('setuser', res.data.body)
+
       if (res.status === 200) {
-        this.$router.push({ name: 'NewReport' })
         Toast.success('登录成功')
-        console.log(this.userToken)
       } else {
         Toast.fail('登录失败')
       }
