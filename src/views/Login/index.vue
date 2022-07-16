@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/api'
 import { login } from '@/api/user'
 import { Toast } from 'vant'
 
@@ -43,7 +44,15 @@ export default {
     }
   },
 
+  created () {
+    this.getUserInfo()
+  },
+
   methods: {
+    async getUserInfo () {
+      const res = await getUserInfo()
+      console.log(res)
+    },
     onClickLeft () {
       this.$router.go(-1)
     },
@@ -56,11 +65,12 @@ export default {
         forbidClick: true
       })
       const res = await login(this.username, this.password)
-      console.log(res.data.body)
+      // console.log(res.data.body)
       this.$store.commit('setuser', res.data.body)
 
       if (res.status === 200) {
         Toast.success('登录成功')
+        this.$router.push('/my')
       } else {
         Toast.fail('登录失败')
       }

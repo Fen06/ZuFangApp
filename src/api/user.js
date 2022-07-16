@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+import store from '@/store'
 export const login = (username, password) => {
   return request({
     url: '/user/login',
@@ -11,9 +11,11 @@ export const login = (username, password) => {
   })
 }
 
-export const userData = () => {
+export const getUserInfo = () => {
   return request({
     url: '/user',
-    method: 'GET'
+    headers: {
+      authorization: store.state.user.token
+    }
   })
 }
