@@ -30,20 +30,33 @@
         />
       </van-col>
       <van-col span="16" class="right">
-        <sanp class="title">标题名字</sanp>
-        <sanp class="miaoshu">4室XXXXXXXXXXX</sanp>
-        <sanp class="biaoq">进地铁</sanp>
-        <sanp class="price">8888元/月</sanp>
+        <span class="title">标题名字</span>
+        <span class="miaoshu">4室XXXXXXXXXXX</span>
+        <span class="biaoq">进地铁</span>
+        <span class="price">8888元/月</span>
       </van-col>
     </van-row>
   </div>
 </template>
 
 <script>
+import { getFavorate } from '@/api'
 export default {
   methods: {
     onClickLeft () {
       this.$router.go(-1)
+    },
+    created () {
+      this.getFavorate()
+    },
+
+    async getFavorate () {
+      try {
+        const res = await getFavorate()
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
@@ -61,13 +74,13 @@ export default {
 }
 
 .link {
-  background-color: #ccc;
+  // background-color: #ccc;
   display: flex;
   border-bottom: 0.5px solid #ccc;
   .right {
     height: 2rem;
     margin-top: 0.5rem;
-    background-color: #fff;
+    // background-color: #fff;
     display: flex;
     flex-direction: column;
 

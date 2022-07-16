@@ -19,3 +19,12 @@ export const getUserInfo = () => {
     }
   })
 }
+
+export const getFavorate = () => {
+  return request({
+    url: '/user/favorites',
+    headers: {
+      authorization: store.state.user.token
+    }
+  })
+}

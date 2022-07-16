@@ -32,8 +32,7 @@
 </template>
 
 <script>
-import { getUserInfo } from '@/api'
-import { login } from '@/api/user'
+import { login } from '@/api'
 import { Toast } from 'vant'
 
 export default {
@@ -44,15 +43,7 @@ export default {
     }
   },
 
-  created () {
-    this.getUserInfo()
-  },
-
   methods: {
-    async getUserInfo () {
-      const res = await getUserInfo()
-      console.log(res)
-    },
     onClickLeft () {
       this.$router.go(-1)
     },
@@ -66,7 +57,8 @@ export default {
       })
       const res = await login(this.username, this.password)
       // console.log(res.data.body)
-      this.$store.commit('setuser', res.data.body)
+      this.$store.commit('setuser', res.data.data)
+      console.log(res)
 
       if (res.status === 200) {
         Toast.success('登录成功')

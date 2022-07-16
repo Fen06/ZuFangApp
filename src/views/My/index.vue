@@ -7,9 +7,10 @@
         </div>
         <div class="loginfont">
           <p>游客</p>
-          <van-button type="primary" size="small" to="/login"
-            >去登录</van-button
-          >
+          <van-button type="primary" size="small" to="/login">dengl</van-button>
+          <!-- {{
+            !!$store.state.user.token ? '退出' : '登录'
+          }} -->
         </div>
       </div>
       <div class="ellipse">
@@ -72,9 +73,28 @@
 </template>
 
 <script>
+import { getUserInfo } from '@/api'
 export default {
   data () {
-    return {}
+    return {
+      userinfo: {}
+    }
+  },
+  created () {
+    this.getUserInfo()
+  },
+  methods: {
+    async getUserInfo () {
+      try {
+        const {
+          data: { data }
+        } = await getUserInfo()
+        console.log(data)
+        this.userinfo = data
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 }
 </script>
