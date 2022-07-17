@@ -18,7 +18,7 @@
             :src="`http://liufusong.top:8080${item.houseImg}`"
           />
         </van-col>
-        <van-col span="12" class="right">
+        <van-col span="16" class="right">
           <span class="title">{{ item.title }}</span>
           <span class="miaoshu">{{ item.desc }}</span>
           <span class="biaoq">{{ item.tags && item.tags[0] }}</span>
@@ -59,7 +59,11 @@ export default {
     .title {
       font-size: 0.4rem;
       font-weight: bold;
-      margin-bottom: 0.08rem;
+      // margin-bottom: 0.08rem;
+      color: #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .miaoshu {
       color: #ccc;

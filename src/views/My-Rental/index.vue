@@ -34,6 +34,7 @@ export default {
       try {
         const res = await getUserHouses()
         console.log(res)
+        this.FavorateList = res.data.body
       } catch (error) {
         console.log('getUserHouses', error)
       }
