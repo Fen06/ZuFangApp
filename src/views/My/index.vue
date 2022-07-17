@@ -63,7 +63,7 @@
           <p>我的收藏</p>
         </div>
       </a>
-      <a href="javascript:;" class="flex-box ttop">
+      <a href="#/rental" class="flex-box ttop">
         <div class="font">
           <i class="iconfont icon-fangzi-copy"></i>
           <p>我的出租</p>

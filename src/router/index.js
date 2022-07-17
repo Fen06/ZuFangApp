@@ -43,9 +43,14 @@ const routes = [
     path: '/details/:detailsId',
     name: 'details',
     component: () => import('@/views/Details')
+  },
+  {
+    path: '/rental',
+    name: 'rental',
+    component: () => import('@/views/My-Rental')
   }
 ]
-
+// Rental
 const router = new VueRouter({
   routes
 })
