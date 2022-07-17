@@ -57,8 +57,8 @@ export default {
       })
       const res = await login(this.username, this.password)
       // console.log(res.data.body)
-      this.$store.commit('setuser', res.data.data)
-      console.log(res)
+      this.$store.commit('setuser', res.data.body)
+      console.log('dayin', res)
 
       if (res.status === 200) {
         Toast.success('登录成功')

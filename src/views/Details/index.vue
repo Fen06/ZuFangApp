@@ -168,13 +168,32 @@
 </template>
 
 <script>
-export default {}
+import getHouses from '@/api'
+export default {
+  created () {
+    this.getHouses()
+  },
+  methods: {
+    onClickLeft () {
+      this.$router.go(-1)
+    },
+    async getHouses () {
+      try {
+        console.log(this.$route.params.detailsId)
+        const res = await getHouses(this.$route.params.detailsId)
+        console.log(res)
+        // console.log(this.$route.params.detailsId)
+      } catch (error) {
+        console.log('detailsId', error)
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 .bgc {
   background-color: #f6f5f6;
-
   .Top {
     background-color: #21b97a;
     :deep(.van-nav-bar__title) {

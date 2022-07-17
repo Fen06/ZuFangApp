@@ -37,10 +37,11 @@ const routes = [
   },
   {
     path: '/favorate',
-    component: () => import('@/views/Favorate')
+    component: () => import('@/views/FavorateList')
   },
   {
-    path: '/details',
+    path: '/details/:detailsId',
+    name: 'details',
     component: () => import('@/views/Details')
   }
 ]
