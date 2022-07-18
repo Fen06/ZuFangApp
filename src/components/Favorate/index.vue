@@ -34,7 +34,7 @@ export default {
   name: 'FavorateLList',
   props: {
     item: {
-      type: Object,
+      type: Array,
       required: true
       //   default: () => {}
     }
@@ -48,6 +48,12 @@ export default {
   //   display: flex;
   border-bottom: 0.5px solid #ccc;
 
+  .van-image__img {
+    display: block;
+    width: 106px;
+    margin-top: 0.5rem;
+    height: 80px;
+  }
   .right {
     height: 2rem;
     margin-top: 0.5rem;
@@ -75,7 +81,8 @@ export default {
       padding: 0.08rem;
       margin-top: 0.08rem;
       font-size: 0.3rem;
-      width: 1rem;
+      width: 1.3rem;
+      text-align: center;
       border-radius: 0.08rem;
     }
     .price {

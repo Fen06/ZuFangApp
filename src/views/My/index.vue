@@ -57,13 +57,13 @@
     </div>
     <!-- 中间部分 -->
     <div class="box">
-      <a href="#/favorate" class="flex-box ttop">
+      <a :href="isLogin ? '#/favorate' : '#/login'" class="flex-box ttop">
         <div class="font">
           <i class="iconfont icon-shoucang"></i>
           <p>我的收藏</p>
         </div>
       </a>
-      <a href="#/rental" class="flex-box ttop">
+      <a :href="isLogin ? '#/rental' : '#/login'" class="flex-box ttop">
         <div class="font">
           <i class="iconfont icon-fangzi-copy"></i>
           <p>我的出租</p>
@@ -117,12 +117,17 @@ import { Toast } from 'vant'
 export default {
   data () {
     return {
-      userinfo: {},
-      isLogin: !!this.$store.state.user.token
+      userinfo: {}
+      // isLogin: !!this.$store.state.user.token
     }
   },
   components: {
     [Dialog.Component.name]: Dialog.Component
+  },
+  computed: {
+    isLogin () {
+      return !!this.$store.state.user.token
+    }
   },
   created () {
     this.getUserInfo()

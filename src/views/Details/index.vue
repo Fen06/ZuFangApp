@@ -4,39 +4,45 @@
     <!-- 顶部 -->
     <van-nav-bar
       class="Top"
-      title="住房名称"
+      :title="HousesInformation.description"
       left-arrow
       @click-left="onClickLeft"
     >
     </van-nav-bar>
     <!-- 轮播图 -->
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
+      <van-swipe-item
+        v-for="(item, index) in HousesInformation.houseImg"
+        :key="index"
+      >
+        <img :src="`http://liufusong.top:8080${item}`" alt="" />
+      </van-swipe-item>
     </van-swipe>
 
     <!-- 小区简介 -->
     <div class="Community-profile">
       <div class="Ttop">
         <van-row class="introduce">
-          <span class="name">XX小区</span>
-          <div class="box"><span class="biaoq">近地铁</span></div>
+          <span class="name">{{ HousesInformation.title }}</span>
+          <div class="box">
+            <span class="biaoq">{{
+              HousesInformation.tags && HousesInformation.tags[0]
+            }}</span>
+          </div>
         </van-row>
 
         <van-row class="price">
           <van-col class="price-box" span="8">
-            <div class="topred">3000/月</div>
+            <div class="topred">{{ HousesInformation.price }}/月</div>
             <div class="bottom">租金</div>
           </van-col>
           <van-col class="price-box" span="8">
-            <div class="topred">3000/月</div>
-            <div class="bottom">租金</div>
+            <div class="topred">{{ HousesInformation.roomType }}</div>
+            <div class="bottom">房型</div>
           </van-col>
           <van-col class="price-box" span="8">
-            <div class="topred">3000/月</div>
-            <div class="bottom">租金</div>
+            <div class="topred">{{ HousesInformation.size }}平米</div>
+            <div class="bottom">面积</div>
           </van-col>
         </van-row>
 
@@ -46,12 +52,14 @@
               <span class="grey">装修：</span><span class="black">精装</span>
             </div>
             <div class="showlouc">
-              <span class="grey">楼层：</span><span class="black">高楼层</span>
+              <span class="grey">楼层：</span
+              ><span class="black">{{ HousesInformation.floor }}</span>
             </div>
           </van-col>
           <van-col class="right-classification" span="12">
             <div class="showzx">
-              <span class="grey">朝向：</span><span>北</span>
+              <span class="grey">朝向：</span
+              ><span>{{ HousesInformation.oriented[0] }}</span>
             </div>
             <div class="showlouc">
               <span class="grey">类型：</span><span>普通住宅</span>
@@ -73,11 +81,7 @@
       <van-row class="row-icon">
         <van-col span="4" class="icon-box">
           <van-icon name="gem-o"></van-icon>
-          <span>洗衣服</span>
-        </van-col>
-        <van-col span="4" class="icon-box">
-          <van-icon name="gem-o"></van-icon>
-          <span>洗衣服</span>
+          <span>{{ HousesInformation.supporting[0] }}</span>
         </van-col>
       </van-row>
     </div>
@@ -110,31 +114,67 @@
       </van-row>
       <van-row class="text">
         <p>
-          爱的我激动激动IQ叫我ID机器哦我王建东IQ叫我if机器哦我我佛IQ我我哦轻举妄动IQ为奇偶IQ解冻期我就去启动进去我的机器哦未鉴定哦IQ我觉得我去玩今日排期即日起我怕乳胶漆我居然
+          1.周边配套齐全，地铁四号线陶然亭站，交通便利，公交云集，距离北京南站、西站都很近距离。
+          2.小区规模大，配套全年，幼儿园，体育场，游泳馆，养老院，小学。
+          3.人车分流，环境优美。
+          4.精装两居室，居家生活方便，还有一个小书房，看房随时联系。
         </p>
       </van-row>
     </div>
 
     <!-- 猜你喜欢 -->
     <div class="like">
-      <van-row class="like-title"><p>房源近况</p></van-row>
+      <van-row class="like-title"><p>猜你喜欢</p></van-row>
       <van-row class="link">
         <van-col span="8" class="left">
           <van-image
             width="3rem"
             height="3rem"
             fit="contain"
-            src="https://img01.yzcdn.cn/vant/cat.jpeg"
+            src="http://liufusong.top:8080/img/message/1.png"
           />
         </van-col>
         <van-col span="16" class="right">
-          <span class="title">标题名字</span>
-          <span class="miaoshu">4室XXXXXXXXXXX</span>
-          <span class="biaoq">进地铁</span>
-          <span class="price">8888元/月</span>
+          <span class="title">安贞西里 3室1厅</span>
+          <span class="miaoshu">72.32²/南 北/低楼层</span>
+          <span class="biaoq" style="width: 1.3rem">随时看房</span>
+          <span class="price">4500 元/月</span>
+        </van-col>
+      </van-row>
+      <van-row class="link">
+        <van-col span="8" class="left">
+          <van-image
+            width="3rem"
+            height="3rem"
+            fit="contain"
+            src="http://liufusong.top:8080/img/message/1.png"
+          />
+        </van-col>
+        <van-col span="16" class="right">
+          <span class="title">天居园 2室1厅</span>
+          <span class="miaoshu">83²/南/高楼层</span>
+          <span class="biaoq">近地铁</span>
+          <span class="price">7200 元/月</span>
+        </van-col>
+      </van-row>
+      <van-row class="link">
+        <van-col span="8" class="left">
+          <van-image
+            width="3rem"
+            height="3rem"
+            fit="contain"
+            src="http://liufusong.top:8080/img/message/2.png"
+          />
+        </van-col>
+        <van-col span="16" class="right">
+          <span class="title">角门甲四号院 1室1厅</span>
+          <span class="miaoshu">52²/西南/低楼层</span>
+          <span class="biaoq" style="width: 1.3rem">集中供暖</span>
+          <span class="price">4300 元/月</span>
         </van-col>
       </van-row>
     </div>
+    <div class="blank"></div>
 
     <!-- 底部 -->
     <!-- <div class="footer">
@@ -151,13 +191,8 @@
     </div> -->
     <div>
       <van-row class="footer">
-        <van-col span="8" class="button">
-          <img
-            class="sc"
-            src="http://liufusong.top:8080/img/unstar.png
-"
-            alt=""
-          />
+        <van-col span="8" class="button" @click="btnXX">
+          <img class="sc" :src="Xingx" alt="" />
           <span class="sctext">收藏</span>
         </van-col>
         <van-col class="button" span="8">在线咨询</van-col>
@@ -168,8 +203,16 @@
 </template>
 
 <script>
-import getHouses from '@/api'
+import { Toast } from 'vant'
+import { getHouses } from '@/api'
 export default {
+  data () {
+    return {
+      HousesInformation: [],
+      Xingx: 'http://liufusong.top:8080/img/star.png'
+      // http://liufusong.top:8080/img/unstar.png
+    }
+  },
   created () {
     this.getHouses()
   },
@@ -182,9 +225,28 @@ export default {
         console.log(this.$route.params.detailsId)
         const res = await getHouses(this.$route.params.detailsId)
         console.log(res)
+        this.HousesInformation = res.data.body
         // console.log(this.$route.params.detailsId)
       } catch (error) {
         console.log('detailsId', error)
+      }
+    },
+
+    btnXX () {
+      if (this.Xingx === 'http://liufusong.top:8080/img/star.png') {
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        })
+        this.$toast.success('已取消收藏')
+        this.Xingx = 'http://liufusong.top:8080/img/unstar.png'
+      } else {
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        })
+        this.$toast.success('已添加到收藏夹')
+        this.Xingx = 'http://liufusong.top:8080/img/star.png'
       }
     }
   }
@@ -206,9 +268,12 @@ export default {
   .my-swipe .van-swipe-item {
     color: #fff;
     font-size: 20px;
-    line-height: 6rem;
+    // line-height: 6rem;
     text-align: center;
-    background-color: #39a9ed;
+    background-color: #f6f5f6;
+    img {
+      width: 375px;
+    }
   }
   .Community-profile {
     background-color: #fff;
@@ -401,6 +466,7 @@ export default {
         // padding: 0 0.6rem;
       }
     }
+
     .Top {
       background-color: #21b97a;
     }
@@ -442,6 +508,10 @@ export default {
           width: 1rem;
           border-radius: 0.08rem;
         }
+        // .biaoq::first-child {
+        //   padding: 0.08rem 0.2rem;
+        //   width: 1.3rem;
+        // }
         .price {
           font-size: 0.35rem;
           color: red;
@@ -449,6 +519,11 @@ export default {
         }
       }
     }
+  }
+  .blank {
+    width: 100%;
+    height: 1.1rem;
+    background-color: #fff;
   }
 
   :deep(.grey) {
@@ -478,7 +553,9 @@ export default {
       }
     }
     .button-t {
+      color: #fff;
       border-right: none;
+      background-color: #21b97a;
     }
   }
 }

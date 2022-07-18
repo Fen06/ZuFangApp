@@ -7,12 +7,19 @@
       @click-left="onClickLeft"
     >
     </van-nav-bar>
-    <Favorate :item="FavorateList"></Favorate>
+    <div class="toast" v-if="this.FavorateList.length === 0">
+      <!--  -->
+      <img src="http://liufusong.top:8080/img/not-found.png" alt="" />
+      <p class="text">您还没有发布房源，<span>去发布房源</span>吧~</p>
+    </div>
+    <Favorate v-else :item="FavorateList"></Favorate>
   </div>
 </template>
 
 <script>
 import Favorate from '@/components/Favorate/index.vue'
+import { Toast } from 'vant'
+
 import { getUserHouses } from '@/api'
 export default {
   data () {
@@ -32,6 +39,10 @@ export default {
     },
     async getUserHouses () {
       try {
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        })
         const res = await getUserHouses()
         console.log(res)
         this.FavorateList = res.data.body
@@ -44,6 +55,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.toast {
+  margin-top: 2rem;
+  img {
+    margin-left: 2.5rem;
+    width: 5rem;
+  }
+  .text {
+    text-align: center;
+    font-size: 0.32rem;
+    span {
+      color: #33c4b8;
+    }
+  }
+}
 .Top {
   background-color: #21b97a;
 }
