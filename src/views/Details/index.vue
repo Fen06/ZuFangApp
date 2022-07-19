@@ -25,9 +25,12 @@
         <van-row class="introduce">
           <span class="name">{{ HousesInformation.title }}</span>
           <div class="box">
-            <span class="biaoq">{{
-              HousesInformation.tags && HousesInformation.tags[0]
-            }}</span>
+            <span
+              class="biaoq"
+              v-for="(item, index) in HousesInformation.tags"
+              :key="index"
+              >{{ HousesInformation.tags && HousesInformation.tags[0] }}</span
+            >
           </div>
         </van-row>
 
@@ -59,7 +62,9 @@
           <van-col class="right-classification" span="12">
             <div class="showzx">
               <span class="grey">朝向：</span
-              ><span>{{ HousesInformation.oriented[0] }}</span>
+              ><span>{{
+                HousesInformation.oriented && HousesInformation.oriented[0]
+              }}</span>
             </div>
             <div class="showlouc">
               <span class="grey">类型：</span><span>普通住宅</span>
@@ -79,9 +84,14 @@
         <p>房间配套</p>
       </van-row>
       <van-row class="row-icon">
-        <van-col span="4" class="icon-box">
+        <van-col
+          span="4"
+          class="icon-box"
+          v-for="(item, index) in HousesInformation.supporting"
+          :key="index"
+        >
           <van-icon name="gem-o"></van-icon>
-          <span>{{ HousesInformation.supporting[0] }}</span>
+          <span>{{ HousesInformation.supporting[index] }}</span>
         </van-col>
       </van-row>
     </div>
@@ -95,7 +105,7 @@
             height="1.65rem"
             fit="cover"
             round
-            src="https://img01.yzcdn.cn/vant/cat.jpeg"
+            src="http://liufusong.top:8080/img/avatar.png"
           />
         </van-col>
         <van-col span="6" class="Owner-information">
@@ -204,17 +214,24 @@
 
 <script>
 import { Toast } from 'vant'
-import { getHouses } from '@/api'
+import {
+  getHouses,
+  getIsFavorate,
+  getAddFavorate,
+  getDeleteFavorate
+} from '@/api'
 export default {
   data () {
     return {
       HousesInformation: [],
-      Xingx: 'http://liufusong.top:8080/img/star.png'
-      // http://liufusong.top:8080/img/unstar.png
+      Xingx: 'http://liufusong.top:8080/img/star.png',
+      isFavorate: []
     }
   },
   created () {
     this.getHouses()
+    this.getIsFavorate()
+    // this.getDeleteFavorate()
   },
   methods: {
     onClickLeft () {
@@ -231,9 +248,35 @@ export default {
         console.log('detailsId', error)
       }
     },
-
+    // 是否收藏
+    async getIsFavorate () {
+      try {
+        const data = await getIsFavorate(this.$route.params.detailsId)
+        this.isFavorate = data.data.body
+        console.log('data', data.data.body.isFavorite)
+      } catch (error) {
+        console.log('Is收藏', error)
+      }
+    },
+    async getAddFavorate () {
+      try {
+        const res = await getAddFavorate(this.$route.params.detailsId)
+        console.log(res)
+      } catch (e) {
+        console.log('点击收藏', e)
+      }
+    },
+    async getDeleteFavorate () {
+      try {
+        const res = await getDeleteFavorate(this.$route.params.detailsId)
+        console.log(res)
+      } catch (e) {
+        console.log('删除收藏', e)
+      }
+    },
     btnXX () {
-      if (this.Xingx === 'http://liufusong.top:8080/img/star.png') {
+      if (this.isFavorate) {
+        this.getDeleteFavorate()
         Toast.loading({
           message: '加载中...',
           forbidClick: true
@@ -241,6 +284,7 @@ export default {
         this.$toast.success('已取消收藏')
         this.Xingx = 'http://liufusong.top:8080/img/unstar.png'
       } else {
+        this.getAddFavorate()
         Toast.loading({
           message: '加载中...',
           forbidClick: true
@@ -272,7 +316,7 @@ export default {
     text-align: center;
     background-color: #f6f5f6;
     img {
-      width: 375px;
+      width: 100%;
     }
   }
   .Community-profile {
