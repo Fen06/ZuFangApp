@@ -55,7 +55,13 @@ const routes = [
   },
   {
     path: '/gorent',
-    component: () => import('@/views/Gorent')
+    component: () => import('@/views/Gorent'),
+    children: [
+      {
+        path: '/gorent/search',
+        component: () => import('@/views/Gorent/Search')
+      }
+    ]
   }
 ]
 // Rental

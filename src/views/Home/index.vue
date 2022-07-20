@@ -10,7 +10,8 @@
       >
         <template #label>
           <div @click="$router.push('/city')">
-            <span class="bj">北京</span> <span class="bj bj-font"> ▼</span>
+            <span class="bj">北京</span>
+            <span class="bj bj-font"> ▼</span>
           </div>
         </template>
         <template #action>

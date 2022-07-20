@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3521045 */
-  src: url('iconfont.woff2?t=1658154860235') format('woff2'),
-       url('iconfont.woff?t=1658154860235') format('woff'),
-       url('iconfont.ttf?t=1658154860235') format('truetype');
+  src: url('iconfont.woff2?t=1658284149060') format('woff2'),
+       url('iconfont.woff?t=1658284149060') format('woff'),
+       url('iconfont.ttf?t=1658284149060') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,46 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bingxiang:before {
+  content: "\e625";
+}
+
+.icon-wifi:before {
+  content: "\e783";
+}
+
+.icon-xiyiji:before {
+  content: "\e67d";
+}
+
+.icon-kongdiao:before {
+  content: "\e65b";
+}
+
+.icon-shuinuanqigongcheng:before {
+  content: "\e636";
+}
+
+.icon-haofangtuo400iconfont2reshuiqi:before {
+  content: "\e6fc";
+}
+
+.icon-haofangtuo400iconfont2shafa:before {
+  content: "\e6fd";
+}
+
+.icon-meiqitianranqi:before {
+  content: "\e60e";
+}
+
+.icon-yigui-hui:before {
+  content: "\e60c";
+}
+
+.icon-dianshi:before {
+  content: "\e67e";
 }
 
 .icon-ditu:before {

@@ -41,3 +41,10 @@ export const getDeleteFavorate = (id) => {
     }
   })
 }
+
+// 发布房屋所需条件
+export const getHouseCondition = () => {
+  return request({
+    url: '/houses/params'
+  })
+}

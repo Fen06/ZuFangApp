@@ -7,3 +7,11 @@ export const getCityList = (level) => {
     }
   })
 }
+
+export const getHotCityList = () => {
+  return request({
+    url: '/area/hot'
+  })
+}
+
+// /area/hot

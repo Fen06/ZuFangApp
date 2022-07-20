@@ -9,7 +9,7 @@
         background="#21b97a"
       >
         <template #left>
-          <van-icon name="arrow-left" class="arrow-left" />
+          <van-icon name="arrow-left" class="arrow-left" @click="go" />
         </template>
         <template #label>
           <div @click="$router.push('/city')">
@@ -32,6 +32,11 @@ export default {
   data () {
     return {
       value: ''
+    }
+  },
+  methods: {
+    go () {
+      this.$router.go(-1)
     }
   }
 }
