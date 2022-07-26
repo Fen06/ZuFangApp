@@ -48,3 +48,24 @@ export const getHouseCondition = () => {
     url: '/houses/params'
   })
 }
+
+// /home/groups
+// 当地租房小组
+export const getRentHouse = (areaId) => {
+  return request({
+    url: '/home/groups',
+    params: {
+      area: areaId
+    }
+  })
+}
+
+// 根据城市名称查询该城市信息[区域]
+export const getCityEare = (id) => {
+  return request({
+    url: '/area/map',
+    params: {
+      id: id
+    }
+  })
+}

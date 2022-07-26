@@ -27,6 +27,7 @@
           v-for="(ele, index) in AllCity"
           :key="index"
           v-show="ele.short.substring(0, 1) === item.toLowerCase()"
+          @click="GoCity(ele.label, ele.value)"
         >
         </van-cell>
       </div>
@@ -36,6 +37,7 @@
 
 <script>
 import { getCityList, getHotCityList } from '@/api'
+import { Toast } from 'vant'
 export default {
   data () {
     return {
@@ -55,7 +57,7 @@ export default {
         'K',
         'L',
         'M',
-        'I',
+        'N',
         'O',
         'P',
         'Q',
@@ -66,11 +68,16 @@ export default {
         'V',
         'W',
         'X',
+        'Y',
         'Z'
       ],
       HotCity: [],
       AllCity: [],
-      value: '北京'
+      value: '北京',
+      // 存点击的城市
+      cuttentcity: '',
+      // 点击城市的value
+      cityEare: ''
     }
   },
   created () {
@@ -81,11 +88,24 @@ export default {
     onClickLeft () {
       this.$router.go(-1)
     },
+    // 点击城市进行跳转
+    GoCity (val, id) {
+      console.log(val)
+      this.CurrentCity = val
+      this.cityEare = id
+      this.$store.commit('setCity', this.CurrentCity)
+      this.$store.commit('setCityValue', this.cityEare)
+      this.$router.push('/ ')
+    },
     async getCityList () {
       try {
         const res = await getCityList(1)
         console.log(res.data.body)
         this.AllCity = res.data.body
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        })
       } catch (error) {
         console.log('error', error)
       }
@@ -95,6 +115,10 @@ export default {
         const res = await getHotCityList()
         // console.log(res.data.body)
         this.HotCity = res.data.body
+        Toast.loading({
+          message: '加载中...',
+          forbidClick: true
+        })
       } catch (error) {
         console.log('error', error)
       }

@@ -140,6 +140,8 @@ export default {
         this.userinfo = res.data.body
       } catch (error) {
         console.log(error)
+        this.$toast.fail('登录过期，请重新登录')
+        this.$router.push('/login')
       }
     },
 
@@ -156,6 +158,7 @@ export default {
             forbidClick: true
           })
           this.isLogin = !this.isLogin
+          window.location.reload()
         })
         .catch(() => {
           // on cancel

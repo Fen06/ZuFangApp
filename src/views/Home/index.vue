@@ -10,7 +10,7 @@
       >
         <template #label>
           <div @click="$router.push('/city')">
-            <span class="bj">北京</span>
+            <span class="bj">{{ HomeCity === '' ? '北京' : HomeCity }}</span>
             <span class="bj bj-font"> ▼</span>
           </div>
         </template>
@@ -53,41 +53,66 @@
       <van-cell-group>
         <van-cell title="整租小组" value="更多" />
       </van-cell-group>
-      <van-grid :column-num="2">
-        <van-grid-item
-          v-for="value in 4"
-          :key="value"
-          icon="photo-o"
-          text="文字"
-          gutter="20px"
-          border
-        />
-      </van-grid>
+      <van-row class="RentTeam">
+        <van-col
+          span="11"
+          class="public"
+          v-for="item in RentCity"
+          :key="item.id"
+        >
+          <img :src="`http://liufusong.top:8080${item.imgSrc}`" alt="" />
+          <div class="text">
+            <span class="title">{{ item.title }}</span>
+            <span class="desc">{{ item.desc }}</span>
+          </div>
+        </van-col>
+      </van-row>
     </div>
   </div>
 </template>
 
 <script>
-import { getShouye } from '@/api'
+import { getShouye, getRentHouse } from '@/api'
 export default {
   data () {
     return {
       imges: [],
-      value: ''
+      value: '',
+      // 当前城市
+      HomeCity: '',
+      // 当地地区vlaue
+      HomeEare: '',
+      //  租房小组
+      RentCity: ''
     }
   },
   created () {
     this.getShouye()
+    // 保存进度   取值选中的城市-------------------------------------
+    this.HomeCity = this.$store.state.city
+    this.HomeEare = this.$store.state.homeEare
+    console.log('当前城市', this.HomeCity, '地区vlaue值', this.HomeEare)
+  },
+  mounted () {
+    this.getRentHouse()
   },
   methods: {
+    // 获取首页轮播图
     async getShouye () {
       try {
         const { data } = await getShouye()
-        // console.log(data.body)
         this.imges = [...data.body]
-        console.log(this.imges)
       } catch (error) {
         console.log('Shouye', error)
+      }
+    },
+    async getRentHouse () {
+      try {
+        const res = await getRentHouse(this.HomeEare)
+        console.log('租房小组', res.data.body)
+        this.RentCity = res.data.body
+      } catch (e) {
+        console.log('获取地区有误', e)
       }
     }
   }
@@ -151,6 +176,28 @@ export default {
   }
   .van-cell__value {
     font-weight: 400;
+  }
+
+  .RentTeam {
+    background-color: #f6f5f6;
+    padding: 0 0.2rem 0.2rem 0.2rem;
+    .public {
+      display: flex;
+      padding: 0.4rem;
+      margin: 0.2rem;
+      font-size: 0.3rem;
+      background-color: #fff;
+      img {
+        width: 1rem;
+        height: 1rem;
+      }
+      .text {
+        margin-left: 0.65rem;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    // margin: 0.35rem;
   }
 }
 // .my-swipe .van-swipe-item {
