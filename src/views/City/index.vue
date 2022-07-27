@@ -20,6 +20,7 @@
         :key="index.value"
         @click="HotC(item.label, item.value)"
       />
+      <!-- 右侧ABCD -->
       <div v-for="(item, index) in indexList" :key="index">
         <van-index-anchor :index="item">{{ item }}</van-index-anchor>
         <van-cell

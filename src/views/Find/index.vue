@@ -3,7 +3,6 @@
     <!-- 顶部 -->
     <form action="/">
       <van-search
-        v-model="value"
         show-action
         class="search"
         placeholder="请输入小区或地址"
@@ -47,12 +46,7 @@
       >
     </van-tabbar>
     <!-- 面板显示 -->
-    <van-popup
-      class="eare"
-      v-model="Eareshow"
-      style="height: 52.7%; z-index: 2"
-      :style="{ height: '52.7%' }"
-    >
+    <van-popup class="eare" v-model="Eareshow" :style="{ height: '52.7%' }">
       <!-- 区域选择 -->
       <van-picker
         v-if="this.active === 0"
@@ -60,36 +54,52 @@
         :columns="columns"
         class="eareChoice"
       >
+        <!-- @confirm="submit(item, index)" -->
+        <template #confirm>
+          <button class="EnterYes">确认</button>
+        </template>
+
+        <template #cancel>
+          <button class="EnterNo" @click="Eareshow = false">取消</button>
+        </template>
       </van-picker>
       <!-- 区域选择 -->
       <!-- 方式选择 -->
       <van-picker
         v-if="this.active === 1"
-        title="标题"
+        confirm-button-text=" "
+        cancel-button-text=" "
         show-toolbar
         :columns="FangShi"
-      />
+        @confirm="submit"
+      >
+        <template #confirm>
+          <button class="EnterYes">确认</button>
+        </template>
+
+        <template #cancel>
+          <button class="EnterNo" @click="Eareshow = false">取消</button>
+        </template>
+      </van-picker>
       <!-- 方式选择 -->
       <!-- 租金选择 -->
       <van-picker
         v-if="this.active === 2"
-        title="标题"
+        confirm-button-text=" "
+        cancel-button-text=" "
         show-toolbar
         :columns="money"
-      />
+        @confirm="rent"
+      >
+        <template #confirm>
+          <button class="EnterYes">确认</button>
+        </template>
+
+        <template #cancel>
+          <button class="EnterNo" @click="Eareshow = false">取消</button>
+        </template>
+      </van-picker>
       <!-- 租金选择 -->
-      <van-row class="button">
-        <van-col span="8"
-          ><van-button class="popupNo" type="primary" @click="btnOut"
-            >取消</van-button
-          ></van-col
-        >
-        <van-col span="16"
-          ><van-button class="popupYes" type="primary"
-            >确认</van-button
-          ></van-col
-        >
-      </van-row>
     </van-popup>
 
     <!-- 筛选 -->
@@ -97,7 +107,6 @@
       v-model="rightShow"
       class="rightPopup"
       position="right"
-      style="width: 78%; z-index: 2355"
       :style="{ width: '78%' }"
     >
       <!-- 户型 -->
@@ -109,11 +118,11 @@
             <van-col
               span="8"
               class="TypeSelection"
-              :class="item.isSelectet ? 'SelectionCurrent' : ''"
+              :class="{ SelectionCurrent: isCurrent.indexOf(item.value) > -1 }"
               v-for="(item, index) in HuXing"
               :key="index"
-              @click="Cuttent(item, index)"
-              >{{ item.name }}</van-col
+              @click="Cuttent(item.value)"
+              >{{ item.label }}</van-col
             >
           </van-row>
         </van-col>
@@ -126,11 +135,11 @@
             <van-col
               span="8"
               class="DirectionSelection"
-              :class="item.isSelectet ? 'SelectionCurrent' : ''"
+              :class="{ SelectionCurrent: isCurrent.indexOf(item.value) > -1 }"
               v-for="(item, index) in ChaoXiang"
               :key="index"
-              @click="CXCuttent(item, index)"
-              >{{ item.name }}</van-col
+              @click="CXCuttent(item.value)"
+              >{{ item.label }}</van-col
             >
           </van-row>
         </van-col>
@@ -144,11 +153,11 @@
             <van-col
               span="8"
               class="LouCengSelection"
-              :class="item.isSelectet ? 'SelectionCurrent' : ''"
+              :class="{ SelectionCurrent: isCurrent.indexOf(item.value) > -1 }"
               v-for="(item, index) in LouCeng"
               :key="index"
-              @click="LcCuttent(item, index)"
-              >{{ item.name }}</van-col
+              @click="LcCuttent(item.value)"
+              >{{ item.label }}</van-col
             >
           </van-row>
         </van-col>
@@ -157,34 +166,36 @@
       <!-- 亮点 -->
       <van-row class="screenBox">
         <van-col class="screenBox-list">
-          <p class="HxText">楼层</p>
+          <p class="HxText">房屋亮点</p>
           <van-row class="HouseLiangDian">
             <van-col
               span="8"
               class="LiangDianSelection"
-              :class="item.isSelectet ? 'SelectionCurrent' : ''"
+              :class="{ SelectionCurrent: isCurrent.indexOf(item.value) > -1 }"
               v-for="(item, index) in LiangDian"
               :key="index"
-              @click="LdCuttent(item, index)"
-              >{{ item.name }}</van-col
+              @click="LdCuttent(item.value)"
+              >{{ item.label }}</van-col
             >
           </van-row>
         </van-col>
       </van-row>
       <div class="footer">
-        <van-button type="primary" class="clear" @click="Clear"
+        <van-button type="primary" class="clear" @click="clear"
           >清除</van-button
         >
         <van-button type="primary" class="enter">确定</van-button>
       </div>
     </van-popup>
+
+    <Favorate :item="FindHouse"></Favorate>
   </div>
 </template>
 
 <script>
-// import Favorate from '@/components/Favorate'
+import Favorate from '@/components/Favorate'
 import { Toast } from 'vant'
-import { getCityEare } from '@/api'
+import { getCityEare, getFindHouse } from '@/api'
 export default {
   data () {
     return {
@@ -198,100 +209,40 @@ export default {
       // 右侧筛选
       rightShow: false,
       // 区域选择
-      columns: [
-        {
-          text: '区域',
-          children: [
-            {
-              text: '不限',
-              children: [{ text: '' }, { text: '' }]
-            },
-            {
-              text: '温州',
-              children: [{ text: '鹿城区' }, { text: '瓯海区' }]
-            }
-          ]
-        },
-        {
-          text: '地跌',
-          children: [
-            {
-              text: '福州',
-              children: [{ text: '鼓楼区' }, { text: '台江区' }]
-            },
-            {
-              text: '厦门',
-              children: [{ text: '思明区' }, { text: '海沧区' }]
-            }
-          ]
-        }
-      ],
-
+      columns: [],
       // 区域选择
       // 方式选择
-      FangShi: ['不限', '整租', '合租'],
+      FangShi: [],
       // 方式选择
       // 租金选择
-      money: [
-        '不限',
-        '1000以下',
-        '1000-2000',
-        '2000-3000',
-        '3000-4000',
-        '4000-5000',
-        '5000-7000',
-        '7000以上'
-      ],
+      money: [],
       // 租金选择
       // 户型
-      HuXing: [
-        { name: '一室', isSelectet: false },
-        { name: '二室', isSelectet: false },
-        { name: '三室', isSelectet: false },
-        { name: '四室', isSelectet: false },
-        { name: '四室+', isSelectet: false }
-      ],
+      HuXing: [],
       // 朝向
-      ChaoXiang: [
-        { name: '东', isSelectet: false },
-        { name: '南', isSelectet: false },
-        { name: '西', isSelectet: false },
-        { name: '北', isSelectet: false },
-        { name: '东南', isSelectet: false },
-        { name: '东北', isSelectet: false },
-        { name: '西南', isSelectet: false },
-        { name: '西北', isSelectet: false }
-      ],
-      //  ['东', '南', '西', '北', '东南', '东北', '西南', '西北']
+      ChaoXiang: [],
       // 楼层
-      LouCeng: [
-        { name: '高楼层', isSelectet: false },
-        { name: '中楼层', isSelectet: false },
-        { name: '低楼层', isSelectet: false }
-      ],
-      // '高楼层', '中楼层', '低楼层'
-      // 房屋两点
-      LiangDian: [
-        { name: '集中供暖', isSelectet: false },
-        { name: '双卫生间', isSelectet: false },
-        { name: '近地铁', isSelectet: false },
-        { name: '随时看房', isSelectet: false },
-        { name: '精装', isSelectet: false },
-        { name: '公寓', isSelectet: false },
-        { name: '独立卫生间', isSelectet: false },
-        { name: '押一付一', isSelectet: false },
-        { name: '独立阳台', isSelectet: false },
-        { name: '月租', isSelectet: false },
-        { name: '限女生', isSelectet: false },
-        { name: '限男生', isSelectet: false },
-        { name: '新上', isSelectet: false }
-      ]
+      LouCeng: [],
+      // 房屋亮点
+      LiangDian: [],
       // ACtiove: 0,
+      isCurrent: [],
+      FindHouse: [],
+      XuanZValue: [],
+      ThisCity: [],
+      // 确认租金
+      Rent: '',
+      // 确认方式
+      Fs: ''
     }
+  },
+  components: {
+    Favorate
   },
   created () {
     this.HomeCity = this.$store.state.city
     this.HomeEare = this.$store.state.homeEare
+    this.getFindHouse()
     console.log('当前城市', this.HomeCity, '地区vlaue值', this.HomeEare)
     this.getCityEare()
   },
@@ -303,30 +254,170 @@ export default {
     btnOut () {
       this.Eareshow = false
     },
-    Cuttent (item, index) {
-      this.actiove = index
-      item.isSelectet = !item.isSelectet
+    clear () {
+      this.isCurrent = ''
     },
-    CXCuttent (item, index) {
-      this.actiove = index
-      item.isSelectet = !item.isSelectet
+    Cuttent (item) {
+      if (this.isCurrent.some((ele) => ele === item)) {
+        this.isCurrent = this.isCurrent.filter((ele) => ele !== item)
+      } else {
+        this.isCurrent.push(item)
+      }
     },
-    LcCuttent (item, index) {
-      this.actiove = index
-      item.isSelectet = !item.isSelectet
+    CXCuttent (item) {
+      if (this.isCurrent.some((ele) => ele === item)) {
+        this.isCurrent = this.isCurrent.filter((ele) => ele !== item)
+      } else {
+        this.isCurrent.push(item)
+      }
     },
-    LdCuttent (item, index) {
-      this.actiove = index
-      item.isSelectet = !item.isSelectet
+    LcCuttent (item) {
+      if (this.isCurrent.some((ele) => ele === item)) {
+        this.isCurrent = this.isCurrent.filter((ele) => ele !== item)
+      } else {
+        this.isCurrent.push(item)
+      }
     },
+    LdCuttent (item) {
+      if (this.isCurrent.some((ele) => ele === item)) {
+        this.isCurrent = this.isCurrent.filter((ele) => ele !== item)
+      } else {
+        this.isCurrent.push(item)
+      }
+      console.log(this.isCurrent)
+    },
+    // 获取当前城市列表
+    async getFindHouse () {
+      try {
+        Toast.loading({
+          message: '正在加载数据...',
+          forbidClick: true,
+          duration: 0
+        })
+        const res = await getFindHouse({ cityId: this.HomeEare })
+        console.log(res)
+        this.FindHouse = res.data.body.list
+        Toast.clear()
+      } catch (e) {
+        console.log('查询房屋', e)
+      }
+    },
+    async submit (item, index) {
+      console.log(item, index)
+      const rent = this.ThisCity.rentType.filter((ele) => ele.label === item)
+      this.Fs = rent[0].value
+      console.log(this.Fs)
+      this.Eareshow = false
+      const res = await getFindHouse({
+        cityId: this.HomeEare,
+        rentType: this.Fs
+      })
+      console.log(res)
+    },
+    // 确认租金
+    async rent (item, index) {
+      console.log(item, index)
+      const rent = this.ThisCity.price.filter((ele) => ele.label === item)
+      this.Rent = rent[0].value
+      console.log(this.Rent)
+      this.Eareshow = false
+      const res = await getFindHouse({
+        cityId: this.HomeEare,
+        price: this.Rent
+      })
+      console.log(res)
+    },
+    // 获得当前城市房屋查询条件
     async getCityEare () {
       try {
         Toast.loading({
           message: '正在加载当前城市信息...',
-          forbidClick: true
+          forbidClick: true,
+          duration: 0
         })
-        const res = await getCityEare(this.HomeEare)
-        console.log('当前城市信息', res)
+        const { data } = await getCityEare(this.HomeEare)
+        // 设置区域值
+        for (let i = 0; i < 2; i++) {
+          if (i === 0) {
+            this.columns.push({ text: '', children: [] })
+            this.columns[i].text = data.body.area.label
+            for (let j = 0; j < data.body.area.children.length; j++) {
+              this.columns[i].children.push({ text: '', children: [] })
+              this.columns[i].children[j].text =
+                data.body.area.children[j].label
+              if (j === 0) {
+                this.columns[i].children[j].children.push({ text: '' })
+              } else {
+                for (
+                  let k = 0;
+                  k < data.body.area.children[j].children.length;
+                  k++
+                ) {
+                  this.columns[i].children[j].children.push({ text: '' })
+                  this.columns[i].children[j].children[k].text =
+                    data.body.area.children[j].children[k].label
+                }
+              }
+            }
+          } else {
+            this.columns.push({ text: '', children: [] })
+            this.columns[i].text = data.body.subway.label
+            for (let j = 0; j < data.body.subway.children.length; j++) {
+              this.columns[i].children.push({ text: '', children: [] })
+              this.columns[i].children[j].text =
+                data.body.subway.children[j].label
+              if (j === 0) {
+                this.columns[i].children[j].children.push({ text: '' })
+              } else {
+                for (
+                  let k = 0;
+                  k < data.body.subway.children[j].children.length;
+                  k++
+                ) {
+                  this.columns[i].children[j].children.push({ text: '' })
+                  this.columns[i].children[j].children[k].text =
+                    data.body.subway.children[j].children[k].label
+                }
+              }
+            }
+          }
+        }
+        // 设置方式值
+        const Fs = data.body.rentType
+        for (let i = 0; i < Fs.length; i++) {
+          this.FangShi.push(Fs[i].label)
+        }
+        // money
+        // 设置租金值
+        const Mo = data.body.price
+        for (let i = 0; i < Mo.length; i++) {
+          this.money.push(Mo[i].label)
+        }
+        // 设置筛选中的户型
+        const Hx = data.body.roomType
+        for (let i = 0; i < Hx.length; i++) {
+          this.HuXing.push(Hx[i])
+          // console.log(this.HuXing)
+        }
+        // 设置筛选中的朝向
+        const Cx = data.body.oriented
+        for (let i = 0; i < Cx.length; i++) {
+          this.ChaoXiang.push(Cx[i])
+        }
+
+        // 设置筛选中的楼层
+        const Lc = data.body.floor
+        for (let i = 0; i < Lc.length; i++) {
+          this.LouCeng.push(Lc[i])
+        }
+        // 设置筛选中的房屋亮点
+        const Ld = data.body.characteristic
+        for (let i = 0; i < Ld.length; i++) {
+          this.LiangDian.push(Ld[i])
+        }
+        Toast.clear()
+        this.ThisCity = data.body
+        console.log('当前城市信息', this.ThisCity)
       } catch (e) {
         console.log('该城市的信息', e)
       }
@@ -336,8 +427,32 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.EnterYes {
+  position: absolute;
+  width: 6rem;
+  height: 1.1rem;
+  margin-top: 8.27rem;
+  background-color: #21b97a;
+  color: #fff;
+  margin-left: -5.6rem;
+  margin-top: 7.67rem;
+  border-top: 0.02rem solid #ccc;
+  font-size: 0.45rem;
+  border: unset;
+}
+
+.EnterNo {
+  width: 3.5rem;
+  height: 1.1rem;
+  margin-top: 8.27rem;
+  color: #21b97a;
+  font-size: 0.45rem;
+  margin-left: -0.35rem;
+  border: unset;
+  background: #fff;
+}
 .search {
-  z-index: 99;
+  z-index: 2009;
   left: 5%;
   top: 0.3rem;
   .arrow-left {
@@ -366,7 +481,7 @@ export default {
 }
 
 .screen {
-  z-index: 2100;
+  z-index: 3;
   .title {
     font-size: 0.425rem;
     span {
@@ -375,25 +490,10 @@ export default {
   }
 }
 .eare {
-  margin-top: 2.8rem;
+  margin-top: 3.8rem;
   width: 101%;
   top: 3.5rem;
-  z-index: 2003;
-}
-.button {
-  .popupNo {
-    width: 100%;
-    text-align: center;
-    background-color: #fff;
-    color: #21b97a;
-    border: unset;
-    font-size: 0.46rem;
-  }
-  .popupYes {
-    width: 100%;
-    background-color: #21b97a;
-    font-size: 0.46rem;
-  }
+  z-index: 5000;
 }
 
 .screenBox {

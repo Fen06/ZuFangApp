@@ -63,9 +63,19 @@ export const getRentHouse = (areaId) => {
 // 根据城市名称查询该城市信息[区域]
 export const getCityEare = (id) => {
   return request({
-    url: '/area/map',
+    url: '/houses/condition',
     params: {
       id: id
     }
+  })
+}
+
+// /houses
+
+// 根据条件查询房屋
+export const getFindHouse = (params) => {
+  return request({
+    url: '/houses',
+    params
   })
 }
